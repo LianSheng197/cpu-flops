@@ -4,10 +4,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>CPU FLOPs</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" type="text/css">
-    <script src="https://unpkg.com/vanilla-datatables@latest/dist/vanilla-dataTables.min.js" type="text/javascript"></script>
-    <link rel="stylesheet" href="main.css">
+    <script src="https://unpkg.com/vanilla-datatables@latest/dist/vanilla-dataTables.min.js" type="text/javascript">
+    </script>
+
+    <style>
+        :root {
+            --main-bg: rgb(0, 61, 77);
+            --main-color: #ddd;
+        }
+
+        body {
+            background-color: var(--main-bg);
+            color: var(--main-color);
+        }
+
+        input.dataTable-input {
+            background-color: var(--main-bg);
+            color: var(--main-color);
+        }
+
+        div.dataTable-search::before {
+            content: "搜尋：";
+        }
+    </style>
 </head>
 
 <body>
@@ -19,24 +40,24 @@
                     <th>GFLOPS/core</th>
                 </tr>
             </thead>
-            <tbody>               
+            <tbody>
             </tbody>
         </table>
     </div>
 
     <script>
-        fetch("data/alldata.json").then(function(response){
+        fetch("data/alldata.json").then(function (response) {
             return response.json();
-        }).then(function(json){
+        }).then(function (json) {
             let rows = "";
             for (var key in json) {
                 if (json.hasOwnProperty(key)) {
-                    rows += `<tr><td>${key}</td><td>${json[key][2]}</td></tr>`;
+                    rows += `<tr><td>${key.replace(/\[.+\]$/, "")}</td><td>${json[key][2]}</td></tr>`;
                 }
             }
             document.querySelector("table#flops tbody").innerHTML = rows;
             const myTable = document.querySelector("table#flops");
-            const dataTable = new DataTable(myTable);   
+            const dataTable = new DataTable(myTable);
         });
     </script>
 </body>
